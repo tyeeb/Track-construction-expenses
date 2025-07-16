@@ -8,6 +8,29 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
+    <nav class="navbar">
+        <div class="navbar-title">Track Construction Expenses</div>
+        <div class="navbar-sessions" id="navbar-sessions">
+            <!-- Sessions will be dynamically inserted here -->
+        </div>
+        <button id="create-session-btn" class="create-session-btn">+ New Session</button>
+    </nav>
+
+    <!-- Session Notes -->
+    <div class="session-notes-section">
+      <label for="session-notes"><b>Session Notes:</b></label>
+      <textarea id="session-notes" rows="3" placeholder="Write notes for this session..."></textarea>
+    </div>
+
+    <!-- Modal for renaming session -->
+    <div id="rename-modal" class="modal" style="display:none;">
+        <div class="modal-content">
+            <span class="close" id="close-rename-modal">&times;</span>
+            <h3>Rename Session</h3>
+            <input type="text" id="rename-session-input" />
+            <button id="save-rename-btn">Save</button>
+        </div>
+    </div>
     <div class="container">
         <h1>Construction Material Tracker</h1>
         <form id="material-form">
