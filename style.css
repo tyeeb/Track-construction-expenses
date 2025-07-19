@@ -1,327 +1,507 @@
-/* General Styling */
+/* --- ROOT VARIABLES & GENERAL STYLES --- */
+:root {
+  --bg-color: #121212;
+  --surface-color: #1E1E1E;
+  --primary-accent: #BB86FC;
+  --secondary-accent: #03DAC6;
+  --text-primary: #ffffff; /* for the notesbox */
+  --text-secondary: #000000;
+  --border-color: rgba(255, 255, 255, 0.1);
+  --glass-bg: rgba(255, 255, 255, 0.05);
+  --danger-color: #CF6679;
+}
+
 * {
   box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* Theme variables */
+:root {
+  --bg: #ffffff;
+  --card-bg: #000000;
+  --border: #e5e7eb;
+  --text: #000000;
+  --text-secondary: #ffffff;
+  --input-bg: #ffffff;
+  --input-border: #e5e7eb;
+  --shadow: 0 6px 32px rgba(255, 255, 255, 0.06);
+  --delete-btn: #ff0000;
+  --delete-btn-hover: #d9363e;
+  --total-cost-bg: #ffffff;
+  --total-cost-text: #ffffff;
+}
+body.dark-mode {
+  /* light mode but dark okay*/
+  --bg: #ffffff;
+  --card-bg: #23262b;
+  --border: #23262b;
+  --text: #000000;
+  --text-secondary: #ffffff;
+  --input-bg: #ffffff;
+  --input-border: #35373c;
+  --shadow: 0 6px 32px rgba(0,0,0,0.18);
+  --delete-btn: #00ff22;
+  --delete-btn-hover: rgb(255, 0, 0);
+  --total-cost-bg: #ffffff;
+  --total-cost-text: #ffffff;
 }
 
 body {
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-  background-color: #f4f7f6;
-  color: #333;
-  margin: 0;
-  padding: 20px;
+  font-family: 'Poppins', Arial, sans-serif;
+  background: #000000;
+  color: #222;
+  overflow-x: hidden;
+  transition: background 0.2s, color 0.2s;
 }
 
-.container {
-  max-width: 800px;
-  margin: auto;
-  background: #fff;
-  padding: 25px;
-  border-radius: 12px;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+/* --- APP LAYOUT --- */
+.app-layout {
+  display: flex;
 }
 
-h1 {
+.main-content {
+  flex-grow: 1;
+  padding: 2rem;
+  overflow-y: auto;
+  height: 100vh;
+}
+
+/* --- SLIDE-IN SIDEBAR & OVERLAY --- */
+.sidebar {
+  width: 280px;
+  background: var(--card-bg);
+  color: var(--text);
+  border-right: 1px solid var(--border);
+  padding: 1.5rem 1rem;
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  left: 0;
+  top: 0;
+  height: 100%;
+  transform: translateX(-100%);
+  transition: transform 0.3s ease-in-out;
+  z-index: 2000;
+  border-radius: 22px 0 0 22px;
+  box-shadow: var(--shadow);
+  border: 1px solid var(--border);
+}
+.sidebar.open {
+  transform: translateX(0);
+}
+
+.sidebar-toggle-btn {
+  position: fixed;
+  top: 1rem;
+  left: 1rem;
+  background: var(--surface-color);
+  color: var(--text-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  width: 45px;
+  height: 45px;
+  cursor: pointer;
+  z-index: 2100;
+  font-size: 1.2rem;
+  transition: all 0.3s ease;
+}
+.sidebar-toggle-btn:hover {
+  color: var(--text-primary);
+  border-color: var(--primary-accent);
+}
+
+.sidebar-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: var(--overlay);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
+  z-index: 1999;
+}
+.sidebar-overlay.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* --- SIDEBAR CONTENT --- */
+.sidebar-header {
+  margin-bottom: 2rem;
+}
+
+.sidebar-title {
+  font-size: 1.5rem;
+  color: var(--primary-accent);
   text-align: center;
-  color: #2c3e50;
-  margin-bottom: 25px;
+  font-weight: 600;
 }
 
-/* Form Styling */
+.session-controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.session-controls h3 {
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+.create-session-btn {
+  background: #111;
+  color: #fff;
+  border: none;
+  border-radius: 22px;
+  padding: 10px 24px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  box-shadow: 0 2px 8px rgba(44,62,80,0.06);
+}
+.create-session-btn:hover {
+  background: #222;
+}
+
+.navbar-sessions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  overflow-y: auto;
+}
+
+.session-btn {
+  background: transparent;
+  border: 1px solid var(--border-color);
+  color: var(--text-secondary);
+  border-radius: 8px;
+  padding: 0.75rem;
+  text-align: left;
+  font-size: 1rem;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: all 0.3s ease;
+}
+.session-btn .session-name {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.session-btn:hover {
+  background-color: var(--glass-bg);
+  border-color: var(--primary-accent);
+  color: var(--text-primary);
+}
+.session-btn.active {
+  background: #222;
+  color: #fff;
+  font-weight: 600;
+  border-color: var(--primary-accent);
+}
+.session-btn .session-actions {
+  display: flex;
+  gap: 0.5rem;
+  opacity: 0.6;
+}
+.session-btn:hover .session-actions, .session-btn.active .session-actions {
+  opacity: 1;
+}
+.session-btn .edit-icon, .session-btn .delete-session-icon {
+  color: var(--text-secondary);
+  font-size: 1.1em;
+  margin-left: 8px;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+.session-btn .delete-session-icon {
+  color: var(--delete-btn);
+}
+.session-btn .delete-session-icon:hover {
+  color: var(--delete-btn-hover);
+}
+
+/* --- MAIN CONTENT & CONTAINER --- */
+.container {
+  background: var(--card-bg);
+  padding: 2rem;
+  border-radius: 22px;
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow);
+}
+
+#error-message {
+  color: var(--danger-color);
+  min-height: 1.5em;
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+/* --- FORM & INPUTS --- */
 form {
   display: flex;
   flex-wrap: wrap;
-  gap: 15px;
-  margin-bottom: 30px;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+input[type="text"],
+input[type="number"],
+button[type="submit"] {
+  flex: 1 1 200px; /* Allow wrapping */
+  padding: 12px 16px;
+  border-radius: 12px;
+  font-size: 1.1em;
+  border: 1px solid var(--input-border);
 }
 
 input[type="text"],
 input[type="number"] {
-  flex: 1;
-  padding: 12px;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  min-width: 150px;
+  background: var(--input-bg);
+  color: var(--text);
+  transition: all 0.3s ease;
+}
+input:focus, textarea:focus {
+  border-color: #222;
+  outline: none;
 }
 
 button[type="submit"] {
-  padding: 12px 25px;
-  border: none;
-  background: #28a745;
-  color: white;
-  border-radius: 8px;
+  background: var(--secondary-accent);
+  color: #f00000;
+  font-weight: 600;
   cursor: pointer;
-  font-weight: bold;
-  transition: background-color 0.2s ease;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
 }
-
 button[type="submit"]:hover {
-  background: #218838;
+  transform: scale(1.05);
+  box-shadow: 0 4px 15px rgba(251, 3, 3, 0.3);
 }
 
-/* Desktop Table Styling */
+/* --- TABLE STYLING --- */
 table {
   width: 100%;
-  border-collapse: collapse;
+  border-collapse: separate;
+  border-spacing: 0 0.5rem;
 }
-
 thead {
-  background: #34495e;
-  color: white;
+  display: none;
 }
-
-th, td {
-  padding: 15px;
-  text-align: left;
-  border-bottom: 1px solid #e0e0e0;
+tbody tr {
+  background: var(--bg-color);
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  display: block; /* For mobile card view */
+  margin-bottom: 1rem;
+  border: 1px solid var(--border-color);
+  padding: 0.5rem;
 }
-
-/* Card-based Mobile View */
-@media (max-width: 768px) {
-  table, thead, tbody, th, tr {
-    display: block;
-  }
-
-  thead {
-    display: none; /* Hide table headers on mobile */
-  }
-
-  tr {
-    background: #fff;
-    border-radius: 10px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-    margin-bottom: 20px;
-    border: 1px solid #e0e0e0;
-  }
-
-  td {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 12px 15px;
-    text-align: right;
-    border-bottom: 1px solid #f0f0f0; /* Separator line inside the card */
-  }
-
-  td:last-child {
-    border-bottom: none; /* No line for the last item (Actions) */
-  }
-
-  td::before {
-    content: attr(data-label); /* Use the data-label from the HTML */
-    font-weight: bold;
-    text-align: left;
-    color: #555;
-    padding-right: 10px;
-  }
+tbody tr:hover {
+  background-color: var(--glass-bg);
+  transform: translateY(-2px);
 }
-
-/* Button & Icon Styling */
-.delete-btn {
-  background: #ff4d4f;
-  color: white;
-  border: none;
-  padding: 8px 15px;
-  border-radius: 20px;
-  cursor: pointer;
-  font-weight: 500;
-  display: inline-flex;
+td {
+  display: flex;
+  justify-content: space-between;
   align-items: center;
-  gap: 8px; /* Space between icon and text */
-  transition: background 0.2s;
+  padding: 0.75rem;
+  border-bottom: 1px solid var(--border-color);
+  word-break: break-word;
 }
-.delete-btn:hover {
-  background: #d9363e;
+td:last-child {
+  border-bottom: none;
 }
-.delete-btn .fas {
-  font-size: 0.9em;
+td:before {
+  content: attr(data-label);
+  font-weight: 500;
+  color: var(--text-secondary);
+}
+.material-icon {
+  color: var(--secondary-accent);
+  margin-right: 0.75rem;
 }
 
-.material-icon {
-  color: #28a745;
-  margin-right: 10px;
+/* --- NOTES & TOTAL COST --- */
+.session-notes-section {
+  margin-bottom: 2rem;
+  background: var(--card-bg);
+  color: var(--text);
+  border-color: var(--border);
+  border-radius: 22px;
+  box-shadow: var(--shadow);
+  border: 1px solid var(--border);
+}
+#session-notes {
+  width: 100%;
+  min-height: 60px;
+  background: var(--surface-color);
+  border: 1px solid var(--border-color);
+  color: var(--text-primary);
+  padding: 1rem;
+  border-radius: 12px;
+  font-size: 1rem;
+  resize: vertical;
+}
+#session-notes:focus {
+  outline: none;
+  border-color: var(--primary-accent);
 }
 
 .total-cost {
+  background: var(--total-cost-bg);
+  color: var(--total-cost-text);
+  border-radius: 18px;
+  box-shadow: 0 2px 12px rgba(44,62,80,0.08);
+  border: 1.5px solid var(--border);
   text-align: center;
-  font-size: 1.5em;
+  font-size: 2em;
   font-weight: bold;
-  color: #2c3e50;
-  background: #eafaf1;
-  border-radius: 8px;
-  padding: 15px;
-  margin-top: 20px;
-}
-
-/* Navbar styles */
-.navbar {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  background: #34495e;
-  color: #fff;
-  padding: 12px 20px;
-  border-radius: 0 0 12px 12px;
-  box-shadow: 0 2px 8px rgba(44, 62, 80, 0.08);
-  margin-bottom: 24px;
-  flex-wrap: wrap;
-}
-.navbar-title {
-  font-size: 1.2em;
-  font-weight: bold;
-  letter-spacing: 0.5px;
-}
-.navbar-sessions {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  flex-wrap: wrap;
-}
-.session-btn {
-  background: #fff;
-  color: #34495e;
-  border: none;
-  border-radius: 6px;
-  padding: 6px 14px;
-  margin: 0 2px;
-  font-size: 1em;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  gap: 6px;
+  padding: 22px 0;
+  margin-top: 28px;
   transition: background 0.2s, color 0.2s;
+  letter-spacing: -1px;
 }
-.session-btn.active {
-  background: #28a745;
-  color: #fff;
-}
-.session-btn .edit-icon {
-  color: #888;
-  font-size: 0.95em;
-  cursor: pointer;
-  margin-left: 4px;
-}
-.create-session-btn {
-  background: #28a745;
-  color: #fff;
-  border: none;
-  border-radius: 6px;
-  padding: 7px 16px;
-  font-size: 1em;
-  font-weight: 500;
-  cursor: pointer;
-  transition: background 0.2s;
-}
-.create-session-btn:hover {
-  background: #218838;
+.total-cost span {
+  background: var(--surface-color);
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
 }
 
-/* Modal styles */
+/* --- MODAL --- */
 .modal {
-  display: flex;
   position: fixed;
-  z-index: 1000;
+  z-index: 2200; /* Above overlay */
   left: 0;
   top: 0;
-  width: 100vw;
-  height: 100vh;
-  background: rgba(0,0,0,0.25);
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(5px);
+  display: none;
   align-items: center;
   justify-content: center;
 }
 .modal-content {
-  background: #fff;
-  padding: 28px 24px 20px 24px;
-  border-radius: 10px;
-  min-width: 260px;
-  box-shadow: 0 2px 16px rgba(44,62,80,0.13);
-  position: relative;
+  background: var(--surface-color);
+  padding: 2rem;
+  border-radius: 16px;
+  border: 1px solid var(--border-color);
+  width: 90%;
+  max-width: 400px;
   text-align: center;
+  position: relative;
 }
-.close {
-  position: absolute;
-  right: 12px;
-  top: 10px;
-  font-size: 1.3em;
-  color: #888;
-  cursor: pointer;
+
+/* --- RESPONSIVE DESIGN --- */
+@media (min-width: 1500px) {
+  .main-content {
+      padding-left: 320px; /* Make room for the visible sidebar */
+  }
+  .sidebar {
+      transform: translateX(0); /* Make the sidebar permanently visible */
+  }
+  .sidebar-toggle-btn, .sidebar-overlay {
+      display: none; /* Hide toggle button and overlay on large desktops */
+  }
+  thead {
+      display: table-header-group;
+  }
+  tbody tr {
+      display: table-row;
+      border: none;
+      margin-bottom: 0;
+  }
+  td {
+      display: table-cell;
+      padding: 1rem;
+      border-top: 1px solid var(--border-color);
+      border-bottom: 1px solid var(--border-color);
+  }
+  td:before {
+      display: none;
+  }
+  td:first-child {
+      border-left: 1px solid var(--border-color);
+      border-radius: 8px 0 0 8px;
+  }
+  td:last-child {
+      border-right: 1px solid var(--border-color);
+      border-radius: 0 8px 8px 0;
+  }
 }
-#rename-session-input {
-  width: 80%;
-  padding: 8px;
-  margin: 12px 0 18px 0;
-  border-radius: 6px;
-  border: 1px solid #ccc;
-  font-size: 1em;
-}
-#save-rename-btn {
-  background: #28a745;
-  color: #fff;
+
+/* Delete button always red */
+.delete-btn {
+  background: var(--delete-btn) !important;
+  color: #fff !important;
   border: none;
-  border-radius: 6px;
-  padding: 7px 18px;
+  padding: 12px 28px;
+  border-radius: 22px;
   font-size: 1em;
-  font-weight: 500;
-  cursor: pointer;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
   transition: background 0.2s;
+  box-shadow: 0 2px 8px rgba(255,77,79,0.08);
 }
-#save-rename-btn:hover {
-  background: #218838;
-}
-
-@media (max-width: 600px) {
-  .navbar {
-    flex-direction: column;
-    align-items: flex-start;
-    padding: 10px 8px;
-    border-radius: 0 0 8px 8px;
-  }
-  .navbar-title {
-    margin-bottom: 8px;
-  }
-  .navbar-sessions {
-    gap: 6px;
-    margin-bottom: 8px;
-  }
-  .create-session-btn {
-    width: 100%;
-    margin-top: 6px;
-  }
+.delete-btn:hover {
+  background: var(--delete-btn-hover) !important;
 }
 
-/* Session Notes Section */
-.session-notes-section {
-  max-width: 800px;
-  margin: 0 auto 18px auto;
-  background: #f8f9fa;
-  border-radius: 8px;
-  padding: 14px 18px 10px 18px;
-  box-shadow: 0 1px 4px rgba(44,62,80,0.06);
-}
-.session-notes-section label {
-  display: block;
-  margin-bottom: 6px;
-  color: #34495e;
-}
-#session-notes {
-  width: 100%;
-  min-height: 48px;
-  border-radius: 6px;
-  border: 1px solid #ccc;
-  padding: 10px;
-  font-size: 1em;
-  resize: vertical;
+.theme-toggle {
+  position: fixed;
+  top: 18px;
+  right: 18px;
+  z-index: 1400;
   background: #fff;
-  box-sizing: border-box;
+  color: #222;
+  border: 1.5px solid #e5e7eb;
+  border-radius: 50%;
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.3em;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(44,62,80,0.04);
+  transition: background 0.2s, color 0.2s;
+}
+.theme-toggle:focus {
+  outline: 2px solid #222;
 }
 
-/* Session delete icon */
-.session-btn .delete-session-icon {
-  color: #ff4d4f;
-  font-size: 1.1em;
-  margin-left: 6px;
-  cursor: pointer;
-  transition: color 0.2s;
+h1, h2, h3, h4 {
+  font-weight: 700;
+  letter-spacing: -0.5px;
+  color: #222;
+  margin-bottom: 0.5em;
 }
-.session-btn .delete-session-icon:hover {
-  color: #d9363e;
+
+h1 {
+  font-size: 2.5em;
 }
+
+h2 {
+  font-size: 2em;
+}
+
+h3 {
+  font-size: 1.5em;
+}
+
+/* Table, cards, and other elements can be further styled for more polish */

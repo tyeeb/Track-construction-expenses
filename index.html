@@ -3,71 +3,93 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Construction Material Tracker</title>
-    <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <title>AuraTrack | Construction Expenses</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"/>
+    <link rel="stylesheet" href="style2.css"/>
 </head>
 <body>
-    <nav class="navbar">
-        <div class="navbar-title">Track Construction Expenses</div>
-        <div class="navbar-sessions" id="navbar-sessions">
-            <!-- Sessions will be dynamically inserted here -->
-        </div>
-        <button id="create-session-btn" class="create-session-btn">+ New Session</button>
-    </nav>
+    <button id="theme-toggle" class="theme-toggle" title="Toggle Theme"><i class="fas fa-moon"></i></button>
+    <button id="sidebar-toggle" class="sidebar-toggle-btn"><i class="fas fa-bars"></i></button>
+    <div id="sidebar-overlay" class="sidebar-overlay"></div>
 
-    <!-- Session Notes -->
-    <div class="session-notes-section">
-      <label for="session-notes"><b>Session Notes:</b></label>
-      <textarea id="session-notes" rows="3" placeholder="Write notes for this session..."></textarea>
+    <div class="app-layout">
+        <nav id="sidebar" class="sidebar">
+            <div class="sidebar-header">
+                <h2 class="sidebar-title">AuraTrack</h2>
+            </div>
+            <div class="session-controls">
+                <h3>Sessions</h3>
+                <button id="create-session-btn" class="create-session-btn"><i class="fas fa-plus"></i> New</button>
+            </div>
+            <div class="navbar-sessions" id="navbar-sessions"></div>
+            
+            <!-- <div class="image-controls">
+                <h3>Gallery</h3>
+                <button id="images-section-btn" class="nav-btn"><i class="fas fa-images"></i> Images</button>
+            </div> -->
+        </nav>
+
+        <main class="main-content">
+            <div id="tracker-view" class="view active-view">
+                <div class="session-notes-section">
+                    <textarea id="session-notes" rows="3" placeholder="Write quick notes for this session..."></textarea>
+                </div>
+                <div class="container">
+                    <form id="material-form">
+                        <input type="text" id="material-name" placeholder="Material Name" required/>
+                        <input type="number" id="material-quantity" placeholder="Quantity" step="any" required/>
+                        <input type="number" id="material-price" placeholder="Price per unit" step="any" required/>
+                        <button type="submit"><i class="fas fa-plus-circle"></i> Add Material</button>
+                    </form>
+                    <div id="error-message"></div>
+                    <table id="material-table">
+                        <thead>
+                            <tr>
+                                <th>Material</th><th>Quantity</th><th>Price per unit</th><th>Total Price</th><th>Date & Time</th><th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+                <div class="total-cost">
+                    <h2>Total Cost: <span id="total-cost-value">₹0.00</span></h2>
+                </div>
+            </div>
+
+            <!-- <div id="images-view" class="view">
+                <div class="image-gallery-header">
+                    <h1>Project Image Gallery</h1>
+                    <button id="insert-image-btn" class="create-session-btn"><i class="fas fa-upload"></i> Insert Image</button>
+                    <input type="file" id="image-upload-input" accept="image/*" style="display: none;" />
+                </div>
+                <div id="image-gallery-container" class="image-gallery-container">
+                    </div>
+            </div> -->
+        </main>
     </div>
 
-    <!-- Modal for renaming session -->
-    <div id="rename-modal" class="modal" style="display:none;">
+    <!-- <div id="rename-modal" class="modal" style="display: none;">
         <div class="modal-content">
-            <span class="close" id="close-rename-modal">&times;</span>
-            <h3>Rename Session</h3>
-            <input type="text" id="rename-session-input" />
-            <button id="save-rename-btn">Save</button>
+          <span class="close" id="close-rename-modal">&times;</span>
+          <h3>Rename Session</h3>
+          <input type="text" id="rename-session-input" />
+          <button id="save-rename-btn">Save</button>
         </div>
-    </div>
-    <div class="container">
-        <h1>Construction Material Tracker</h1>
-        <form id="material-form">
-            <input type="text" id="material-name" placeholder="Material Name" required>
-            <input type="number" id="material-quantity" placeholder="Quantity" step="any">
-            <input type="number" id="material-price" placeholder="Price per unit (45.6 , 32.00)" step="any" required>
-            <button type="submit">Add Material</button>
-        </form>
-        <div id="error-message" style="color: red; min-height: 1.5em;"></div>
-        <table id="material-table">
-            <thead>
-                <tr>
-                    <th>Material</th>
-                    <th>Quantity</th>
-                    <th>Price per unit</th>
-                    <th>Total Price</th>
-                    <th>Date & Time</th>
-                    <th>Actions</th>
-                    
-                   
-                </tr>
-            </thead>
-            <tbody>
-                <!-- Material rows will be inserted here -->
-            </tbody>
-        </table>
-        <div class="total-cost">
-            <h2>Total Cost: <span id="total-cost-value">0.00</span></h2>
+      </div> -->
+      <div id="rename-modal" class="modal" style="display: none;">
+        <div class="modal-content">
+          <span class="close" id="close-rename-modal">&times;</span>
+          <h3>Rename Session</h3>
+          <input type="text" id="rename-session-input" />
+          <button id="save-rename-btn">Save</button>
         </div>
-    </div>
-    <!-- Firebase App (the core Firebase SDK) -->
+      </div>
+
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-    <!-- Firebase Realtime Database -->
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
-    <!-- Firebase Auth (optional, if you use it) -->
-    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
-    <!-- Your scripts -->
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-storage-compat.js"></script>
+    
     <script src="firebase-config.js"></script>
     <script src="script.js"></script>
 </body>
