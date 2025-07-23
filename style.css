@@ -1,80 +1,59 @@
-/* --- ROOT VARIABLES & GENERAL STYLES --- */
+/* --- UNIFIED THEME VARIABLES --- */
 :root {
-  --bg-color: #121212;
-  --surface-color: #1E1E1E;
-  --primary-accent: #BB86FC;
-  --secondary-accent: #03DAC6;
-  --text-primary: #ffffff; /* for the notesbox */
-  --text-secondary: #000000;
-  --border-color: rgba(255, 255, 255, 0.1);
-  --glass-bg: rgba(255, 255, 255, 0.05);
-  --danger-color: #CF6679;
+  /* Font Size */
+  font-size: 16px; /* Base font size, 18px was a bit large */
+
+  /* Light Theme (Default) */
+  --bg: #ffffff;
+  --text: #000000;
+  --surface: #f9f9f9;
+  --border: #eaeaea;
+
+  /* Functional Red Color for Delete Button */
+  --danger: #e53e3e;
+  --danger-hover: #c53030;
 }
 
+body.dark-mode {
+  /* Dark Theme */
+  --bg: #000000;
+  --text: #ffffff;
+  --surface: #111111;
+  --border: #222222;
+}
+
+/* --- GENERAL & LAYOUT --- */
 * {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
 }
 
-/* Theme variables */
-:root {
-  --bg: #ffffff;
-  --card-bg: #000000;
-  --border: #e5e7eb;
-  --text: #000000;
-  --text-secondary: #ffffff;
-  --input-bg: #ffffff;
-  --input-border: #e5e7eb;
-  --shadow: 0 6px 32px rgba(255, 255, 255, 0.06);
-  --delete-btn: #ff0000;
-  --delete-btn-hover: #d9363e;
-  --total-cost-bg: #ffffff;
-  --total-cost-text: #ffffff;
-}
-body.dark-mode {
-  /* light mode but dark okay*/
-  --bg: #ffffff;
-  --card-bg: #23262b;
-  --border: #23262b;
-  --text: #000000;
-  --text-secondary: #ffffff;
-  --input-bg: #ffffff;
-  --input-border: #35373c;
-  --shadow: 0 6px 32px rgba(0,0,0,0.18);
-  --delete-btn: #00ff22;
-  --delete-btn-hover: rgb(255, 0, 0);
-  --total-cost-bg: #ffffff;
-  --total-cost-text: #ffffff;
-}
-
 body {
-  font-family: 'Poppins', Arial, sans-serif;
-  background: #000000;
-  color: #222;
-  overflow-x: hidden;
-  transition: background 0.2s, color 0.2s;
+  font-family: "Inter", sans-serif;
+  background-color: var(--bg);
+  color: var(--text);
+  transition: background-color 0.2s ease, color 0.2s ease;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
-/* --- APP LAYOUT --- */
 .app-layout {
   display: flex;
 }
-
 .main-content {
   flex-grow: 1;
   padding: 2rem;
-  overflow-y: auto;
   height: 100vh;
+  overflow-y: auto;
 }
 
-/* --- SLIDE-IN SIDEBAR & OVERLAY --- */
+/* --- SIDEBAR & OVERLAY --- */
 .sidebar {
   width: 280px;
-  background: var(--card-bg);
-  color: var(--text);
+  background: var(--surface);
   border-right: 1px solid var(--border);
-  padding: 1.5rem 1rem;
+  padding: 1.5rem;
   display: flex;
   flex-direction: column;
   position: fixed;
@@ -84,105 +63,90 @@ body {
   transform: translateX(-100%);
   transition: transform 0.3s ease-in-out;
   z-index: 2000;
-  border-radius: 22px 0 0 22px;
-  box-shadow: var(--shadow);
-  border: 1px solid var(--border);
 }
 .sidebar.open {
   transform: translateX(0);
 }
-
-.sidebar-toggle-btn {
-  position: fixed;
-  top: 1rem;
-  left: 1rem;
-  background: var(--surface-color);
-  color: var(--text-secondary);
-  border: 1px solid var(--border-color);
-  border-radius: 8px;
-  width: 45px;
-  height: 45px;
-  cursor: pointer;
-  z-index: 2100;
-  font-size: 1.2rem;
-  transition: all 0.3s ease;
-}
-.sidebar-toggle-btn:hover {
-  color: var(--text-primary);
-  border-color: var(--primary-accent);
-}
-
 .sidebar-overlay {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background: var(--overlay);
+  background-color: rgba(0, 0, 0, 0.5);
   opacity: 0;
   visibility: hidden;
-  transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
+  transition: opacity 0.3s ease;
   z-index: 1999;
 }
 .sidebar-overlay.active {
   opacity: 1;
   visibility: visible;
 }
-
-/* --- SIDEBAR CONTENT --- */
-.sidebar-header {
-  margin-bottom: 2rem;
-}
-
-.sidebar-title {
-  font-size: 1.5rem;
-  color: var(--primary-accent);
-  text-align: center;
-  font-weight: 600;
-}
-
+.sidebar-header,
 .session-controls {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 1rem;
+  padding: 0 0.5rem;
+  margin-bottom: 1.5rem;
+}
+.sidebar-title {
+  text-align: left;
 }
 
-.session-controls h3 {
-  color: var(--text-secondary);
-  font-weight: 500;
+/* --- BUTTONS & INTERACTIVE ELEMENTS --- */
+.sidebar-toggle-btn,
+.theme-toggle,
+.create-session-btn,
+button[type="submit"] {
+  background: var(--text);
+  color: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+.sidebar-toggle-btn:hover,
+.theme-toggle:hover,
+.create-session-btn:hover,
+button[type="submit"]:hover {
+  opacity: 0.8;
+}
+
+.sidebar-toggle-btn,
+.theme-toggle {
+  position: fixed;
+  top: 1rem;
+  width: 45px;
+  height: 45px;
+  font-size: 1.1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2100;
+}
+.sidebar-toggle-btn {
+  left: 1rem;
+}
+.theme-toggle {
+  right: 1rem;
 }
 
 .create-session-btn {
-  background: #111;
-  color: #fff;
-  border: none;
-  border-radius: 22px;
-  padding: 10px 24px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.3s ease;
+  padding: 0.6rem 1.2rem;
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  box-shadow: 0 2px 8px rgba(44,62,80,0.06);
 }
-.create-session-btn:hover {
-  background: #222;
-}
-
-.navbar-sessions {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-  overflow-y: auto;
+button[type="submit"] {
+  padding: 0.75rem 1rem;
+  font-size: 1rem;
 }
 
 .session-btn {
   background: transparent;
-  border: 1px solid var(--border-color);
-  color: var(--text-secondary);
-  border-radius: 8px;
+  border: 1px solid var(--border);
+  color: var(--text);
+  border-radius: 10px;
   padding: 0.75rem;
   text-align: left;
   font-size: 1rem;
@@ -190,318 +154,310 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  transition: all 0.3s ease;
-}
-.session-btn .session-name {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  transition: all 0.2s ease;
+  width: 100%;
 }
 .session-btn:hover {
-  background-color: var(--glass-bg);
-  border-color: var(--primary-accent);
-  color: var(--text-primary);
+  background-color: var(--surface);
 }
 .session-btn.active {
-  background: #222;
-  color: #fff;
-  font-weight: 600;
-  border-color: var(--primary-accent);
+  background-color: var(--text);
+  color: var(--bg);
+  border-color: var(--text);
 }
-.session-btn .session-actions {
+.session-btn.active .session-actions,
+.session-btn.active .session-name {
+  color: var(--bg);
+}
+.session-actions {
   display: flex;
-  gap: 0.5rem;
-  opacity: 0.6;
+  gap: 0.75rem;
 }
-.session-btn:hover .session-actions, .session-btn.active .session-actions {
-  opacity: 1;
-}
-.session-btn .edit-icon, .session-btn .delete-session-icon {
-  color: var(--text-secondary);
-  font-size: 1.1em;
-  margin-left: 8px;
+
+/* --- RED DELETE BUTTON --- */
+.delete-btn {
+  background: var(--danger);
+  color: #fff;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
   cursor: pointer;
-  transition: color 0.2s;
+  font-weight: 500;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: background-color 0.2s ease;
 }
-.session-btn .delete-session-icon {
-  color: var(--delete-btn);
-}
-.session-btn .delete-session-icon:hover {
-  color: var(--delete-btn-hover);
+.delete-btn:hover {
+  background: var(--danger-hover);
 }
 
-/* --- MAIN CONTENT & CONTAINER --- */
-.container {
-  background: var(--card-bg);
+/* --- FORMS, TABLES, & OTHER ELEMENTS --- */
+.container,
+.session-notes-section {
+  background: var(--surface);
   padding: 2rem;
-  border-radius: 22px;
+  border-radius: 16px;
   border: 1px solid var(--border);
-  box-shadow: var(--shadow);
+  max-width: 1400px;
+  margin-left: auto;
+  margin-right: auto;
 }
-
 #error-message {
-  color: var(--danger-color);
-  min-height: 1.5em;
-  text-align: center;
+  color: var(--danger);
+  min-height: 1.5rem;
   margin-bottom: 1rem;
+  text-align: center;
 }
-
-/* --- FORM & INPUTS --- */
+input[type="text"],
+input[type="number"],
+#session-notes {
+  background: var(--bg);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 0.75rem 1rem;
+  font-size: 1rem;
+  width: 100%;
+  transition: border-color 0.2s ease;
+}
+input:focus,
+#session-notes:focus {
+  border-color: var(--text);
+  outline: none;
+}
 form {
   display: flex;
   flex-wrap: wrap;
   gap: 1rem;
   margin-bottom: 2rem;
 }
-
-input[type="text"],
-input[type="number"],
+input,
 button[type="submit"] {
-  flex: 1 1 200px; /* Allow wrapping */
-  padding: 12px 16px;
-  border-radius: 12px;
-  font-size: 1.1em;
-  border: 1px solid var(--input-border);
+  flex: 1 1 200px;
 }
 
-input[type="text"],
-input[type="number"] {
-  background: var(--input-bg);
-  color: var(--text);
-  transition: all 0.3s ease;
-}
-input:focus, textarea:focus {
-  border-color: #222;
-  outline: none;
-}
-
-button[type="submit"] {
-  background: var(--secondary-accent);
-  color: #f00000;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-}
-button[type="submit"]:hover {
-  transform: scale(1.05);
-  box-shadow: 0 4px 15px rgba(251, 3, 3, 0.3);
-}
-
-/* --- TABLE STYLING --- */
+/* Table styles */
 table {
   width: 100%;
   border-collapse: separate;
   border-spacing: 0 0.5rem;
 }
 thead {
-  display: none;
+  display: none; /* Hidden by default for mobile-first */
+}
+thead th {
+  text-align: left;
+  padding: 0 1rem 1rem 1rem;
+  color: var(--text);
+  font-weight: 600;
 }
 tbody tr {
-  background: var(--bg-color);
-  border-radius: 8px;
-  transition: all 0.3s ease;
-  display: block; /* For mobile card view */
-  margin-bottom: 1rem;
-  border: 1px solid var(--border-color);
-  padding: 0.5rem;
+  background: transparent;
 }
-tbody tr:hover {
-  background-color: var(--glass-bg);
-  transform: translateY(-2px);
+td {
+  padding: 1rem;
+}
+td:before {
+  content: attr(data-label);
+  font-weight: 600;
+  margin-right: 1rem;
+}
+
+/* Total Cost */
+.total-cost {
+  text-align: right;
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-top: 2rem;
+  max-width: 1400px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* --- MOBILE CARD VIEW (Default) --- */
+tbody tr {
+  display: block;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  margin-bottom: 1rem;
+  padding: 0.5rem;
 }
 td {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0.75rem;
-  border-bottom: 1px solid var(--border-color);
-  word-break: break-word;
+  border-bottom: 1px solid var(--border);
 }
 td:last-child {
   border-bottom: none;
 }
-td:before {
-  content: attr(data-label);
-  font-weight: 500;
+
+/* --- DESKTOP TABLE VIEW --- */
+@media (min-width: 1200px) {
+  .main-content {
+    padding-left: 320px;
+  }
+  .sidebar {
+    transform: translateX(0);
+  }
+  .sidebar-toggle-btn,
+  .sidebar-overlay {
+    display: none;
+  }
+
+  thead {
+    display: table-header-group;
+  }
+  tbody tr {
+    display: table-row;
+    border: none;
+    margin: 0;
+    padding: 0;
+    transition: background-color 0.2s ease;
+  }
+  tbody tr:hover {
+    background-color: var(--surface);
+  }
+  td {
+    display: table-cell;
+    justify-content: flex-start;
+    border-bottom: 1px solid var(--border);
+  }
+  td:before {
+    display: none;
+  }
+}
+
+/* Add this to your style.css */
+.material-thumbnail {
+  width: 40px;
+  height: 40px;
+  object-fit: cover;
+  border-radius: 8px;
+  margin-right: 1rem;
+  vertical-align: middle;
+}
+
+.material-name-text {
+  vertical-align: middle;
+}
+
+/* Add these new rules to your existing style.css file */
+
+/* --- View Switching --- */
+.view {
+  display: none;
+}
+.view.active-view {
+  display: block;
+}
+
+/* --- Image Gallery Section --- */
+.image-gallery-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+  padding: 0 1rem;
+}
+.image-gallery-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 1.5rem;
+}
+.image-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+}
+.image-card img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  display: block;
+}
+.image-card-info {
+  padding: 1rem;
+  font-size: 0.9rem;
   color: var(--text-secondary);
 }
-.material-icon {
-  color: var(--secondary-accent);
-  margin-right: 0.75rem;
+.image-card-info p {
+  margin: 0;
 }
 
-/* --- NOTES & TOTAL COST --- */
-.session-notes-section {
-  margin-bottom: 2rem;
-  background: var(--card-bg);
-  color: var(--text);
-  border-color: var(--border);
-  border-radius: 22px;
-  box-shadow: var(--shadow);
+/* --- Sidebar Section for Images --- */
+.image-controls {
+  margin-top: 2rem;
+  padding: 0 0.5rem;
+  border-top: 1px solid var(--border);
+  padding-top: 1.5rem;
+}
+.nav-btn {
+  background: transparent;
   border: 1px solid var(--border);
-}
-#session-notes {
+  color: var(--text);
   width: 100%;
-  min-height: 60px;
-  background: var(--surface-color);
-  border: 1px solid var(--border-color);
-  color: var(--text-primary);
-  padding: 1rem;
-  border-radius: 12px;
+  text-align: left;
+  padding: 0.75rem;
+  border-radius: 10px;
   font-size: 1rem;
-  resize: vertical;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
 }
-#session-notes:focus {
-  outline: none;
-  border-color: var(--primary-accent);
+.nav-btn:hover {
+  background: var(--surface);
 }
-
-.total-cost {
-  background: var(--total-cost-bg);
-  color: var(--total-cost-text);
-  border-radius: 18px;
-  box-shadow: 0 2px 12px rgba(44,62,80,0.08);
-  border: 1.5px solid var(--border);
-  text-align: center;
-  font-size: 2em;
-  font-weight: bold;
-  padding: 22px 0;
-  margin-top: 28px;
-  transition: background 0.2s, color 0.2s;
-  letter-spacing: -1px;
+.nav-btn.active {
+  background: var(--text);
+  color: var(--bg);
 }
-.total-cost span {
-  background: var(--surface-color);
-  padding: 0.5rem 1rem;
-  border-radius: 8px;
-}
-
-/* --- MODAL --- */
 .modal {
   position: fixed;
-  z-index: 2200; /* Above overlay */
-  left: 0;
   top: 0;
+  left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.5);
-  backdrop-filter: blur(5px);
-  display: none;
-  align-items: center;
+  display: none; /* default hidden */
   justify-content: center;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.5); /* semi-transparent overlay */
 }
+
 .modal-content {
-  background: var(--surface-color);
-  padding: 2rem;
-  border-radius: 16px;
-  border: 1px solid var(--border-color);
-  width: 90%;
-  max-width: 400px;
-  text-align: center;
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  width: 300px;
   position: relative;
 }
 
-/* --- RESPONSIVE DESIGN --- */
-@media (min-width: 1500px) {
-  .main-content {
-      padding-left: 320px; /* Make room for the visible sidebar */
-  }
-  .sidebar {
-      transform: translateX(0); /* Make the sidebar permanently visible */
-  }
-  .sidebar-toggle-btn, .sidebar-overlay {
-      display: none; /* Hide toggle button and overlay on large desktops */
-  }
-  thead {
-      display: table-header-group;
-  }
-  tbody tr {
-      display: table-row;
-      border: none;
-      margin-bottom: 0;
-  }
-  td {
-      display: table-cell;
-      padding: 1rem;
-      border-top: 1px solid var(--border-color);
-      border-bottom: 1px solid var(--border-color);
-  }
-  td:before {
-      display: none;
-  }
-  td:first-child {
-      border-left: 1px solid var(--border-color);
-      border-radius: 8px 0 0 8px;
-  }
-  td:last-child {
-      border-right: 1px solid var(--border-color);
-      border-radius: 0 8px 8px 0;
-  }
-}
-
-/* Delete button always red */
-.delete-btn {
-  background: var(--delete-btn) !important;
-  color: #fff !important;
-  border: none;
-  padding: 12px 28px;
-  border-radius: 22px;
-  font-size: 1em;
-  font-weight: 600;
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  transition: background 0.2s;
-  box-shadow: 0 2px 8px rgba(255,77,79,0.08);
-}
-.delete-btn:hover {
-  background: var(--delete-btn-hover) !important;
-}
-
-.theme-toggle {
-  position: fixed;
-  top: 18px;
-  right: 18px;
-  z-index: 1400;
-  background: #fff;
-  color: #222;
-  border: 1.5px solid #e5e7eb;
-  border-radius: 50%;
-  width: 44px;
-  height: 44px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.3em;
+.close {
+  position: absolute;
+  right: 10px;
+  top: 8px;
+  font-size: 20px;
   cursor: pointer;
-  box-shadow: 0 2px 8px rgba(44,62,80,0.04);
-  transition: background 0.2s, color 0.2s;
 }
-.theme-toggle:focus {
-  outline: 2px solid #222;
+/* Add to style.css */
+.sidebar-footer { margin-top: auto; padding: 1rem 0.5rem; }
+.logout-btn {
+    background: var(--danger);
+    color: #fff;
+    width: 100%;
+    border: none;
+    border-radius: 10px;
+    padding: 0.75rem;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
 }
-
-h1, h2, h3, h4 {
-  font-weight: 700;
-  letter-spacing: -0.5px;
-  color: #222;
-  margin-bottom: 0.5em;
-}
-
-h1 {
-  font-size: 2.5em;
-}
-
-h2 {
-  font-size: 2em;
-}
-
-h3 {
-  font-size: 1.5em;
-}
-
-/* Table, cards, and other elements can be further styled for more polish */
